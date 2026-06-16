@@ -1,18 +1,583 @@
-<!DOCTYPE html>
-<html lang="so">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07090F" />
-    <meta name="description" content="Ingliish - Baaritaan Suuq-galeenka" />
-    <title>Ingliish Survey</title>
-    <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { background: #07090F; }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
-</html>
+import { useState } from “react”;
+
+const curriculum = [
+{
+month: 1,
+title: “Foundation”,
+subtitle: “Sounds, Letters & Basic Words”,
+color: “#2D6A4F”,
+accent: “#52B788”,
+level: “Beginner”,
+weeks: [
+{
+week: 1,
+focus: “The English Alphabet & Sounds”,
+topics: [
+“26 letters — vowels (a, e, i, o, u) and consonants”,
+“Sounds that don’t exist in Somali: V, P, X, Q”,
+“Difference between short vowels: cat / cut / cot”,
+“Pronunciation tip: English ‘p’ vs Somali ‘b’ confusion”,
+],
+reading: “Recognize letters in street signs, product labels”,
+speaking: “Say each letter aloud. Practice: ‘My name is ___. I am from Somalia.’”,
+dailyPractice: “10 min: Read aloud from a children’s picture book (e.g., Dr. Seuss)”,
+somaliNote: “Somali has no letter P — English words like ‘people’ and ‘pen’ need special practice.”,
+},
+{
+week: 2,
+focus: “Numbers, Colors & Common Objects”,
+topics: [
+“Numbers 1–100 in words”,
+“10 basic colors with pronunciation”,
+“Classroom & home objects vocabulary (50 words)”,
+“Articles: ‘a’, ‘an’, ‘the’”,
+],
+reading: “Read simple word-picture flashcards”,
+speaking: “Describe your room: ‘There is a red chair. There are two windows.’”,
+dailyPractice: “Label 10 objects in your home with sticky notes in English”,
+somaliNote: “Somali has no articles (a, the) — this is a very common mistake. Practice every day.”,
+},
+{
+week: 3,
+focus: “Greetings & Introducing Yourself”,
+topics: [
+“Formal vs informal greetings”,
+“Introducing yourself: name, age, country, job”,
+“Question words: Who, What, Where, When, Why, How”,
+“Simple present tense: I am / You are / He is”,
+],
+reading: “Read short dialogues (2–3 lines)”,
+speaking: “Role-play: Meeting someone for the first time (2 min conversation)”,
+dailyPractice: “Record yourself introducing yourself. Listen back and improve.”,
+somaliNote: “Practice the ‘th’ sound in ‘the’, ‘this’, ‘that’ — it doesn’t exist in Somali.”,
+},
+{
+week: 4,
+focus: “Family, Food & Daily Routines”,
+topics: [
+“Family members vocabulary”,
+“Food and drink: breakfast, lunch, dinner words”,
+“Daily routine verbs: wake up, eat, go, come, sleep”,
+“Time expressions: in the morning, at night, every day”,
+],
+reading: “Read a short paragraph about someone’s daily routine”,
+speaking: “Describe your own daily routine for 1–2 minutes”,
+dailyPractice: “Watch one English YouTube video for beginners (BBC Learning English)”,
+somaliNote: “Somali is SOV (Subject-Object-Verb). English is SVO. Say ‘I eat rice’ not ‘I rice eat’.”,
+},
+],
+milestone: “Hold a 2-minute self-introduction conversation”,
+resources: [“BBC Learning English (YouTube)”, “Duolingo App”, “English for Somalis phrasebook”],
+},
+{
+month: 2,
+title: “Building Blocks”,
+subtitle: “Grammar, Sentences & Conversations”,
+color: “#1A4971”,
+accent: “#4A90D9”,
+level: “Elementary”,
+weeks: [
+{
+week: 5,
+focus: “Simple Present & Present Continuous”,
+topics: [
+“I work / I am working — knowing the difference”,
+“Yes/No questions: Do you…? Are you…?”,
+“Negatives: I don’t / He doesn’t / They aren’t”,
+“Frequency adverbs: always, usually, sometimes, never”,
+],
+reading: “Read a short news headline and 2-sentence description”,
+speaking: “Describe what you do every day vs what you are doing right now”,
+dailyPractice: “Write 5 sentences about your daily habits using present tense”,
+somaliNote: “Somali verbs change based on the subject differently — English has simpler conjugation but needs ‘do/does’ in questions.”,
+},
+{
+week: 6,
+focus: “Past Simple Tense”,
+topics: [
+“Regular verbs: walk → walked, talk → talked”,
+“Irregular verbs top 30: go→went, eat→ate, see→saw”,
+“Time markers: yesterday, last week, in 2020”,
+“Past tense questions: Did you…? Where did you…?”,
+],
+reading: “Read a short story written in past tense (100 words)”,
+speaking: “Tell a partner what you did yesterday (5 sentences minimum)”,
+dailyPractice: “Memorize 5 irregular verbs per day”,
+somaliNote: “Somali past tense markers are different — don’t translate directly. Learn English patterns as new habits.”,
+},
+{
+week: 7,
+focus: “Prepositions & Descriptions”,
+topics: [
+“Location prepositions: in, on, at, under, behind, next to”,
+“Adjectives: big/small, old/new, hot/cold, happy/sad”,
+“Comparatives: bigger, smaller, more expensive”,
+“Superlatives: the biggest, the most beautiful”,
+],
+reading: “Read a paragraph describing a place (e.g., a market or city)”,
+speaking: “Describe your neighborhood or city for 2 minutes”,
+dailyPractice: “Describe one photo from your phone in 5 sentences”,
+somaliNote: “Adjectives come BEFORE the noun in English: ‘a big house’ — opposite order from Somali.”,
+},
+{
+week: 8,
+focus: “Shopping, Money & Directions”,
+topics: [
+“Shopping phrases: How much? Can I have…? I’d like…”,
+“Numbers for money: prices, currency”,
+“Asking & giving directions: turn left, go straight, take the second road”,
+“Modal verbs: can, can’t, could”,
+],
+reading: “Read a simple menu or product list”,
+speaking: “Role-play: Buying something at a shop (price negotiation)”,
+dailyPractice: “Watch a YouTube video on English shopping dialogues”,
+somaliNote: “In Mogadishu context — practice English prices alongside USD/shilling for real-world use.”,
+},
+],
+milestone: “Describe your past week and make a purchase conversation”,
+resources: [“EnglishClass101 (YouTube)”, “Perfect English Grammar website”, “Oxford Picture Dictionary”],
+},
+{
+month: 3,
+title: “Communication”,
+subtitle: “Reading Texts & Speaking Fluently”,
+color: “#6B2D8B”,
+accent: “#A855F7”,
+level: “Pre-Intermediate”,
+weeks: [
+{
+week: 9,
+focus: “Future Tense & Plans”,
+topics: [
+“Will vs Going to — predictions vs plans”,
+“Present continuous for future: I’m meeting him tomorrow”,
+“Future time expressions: tomorrow, next month, in 2026”,
+“Making promises and offers with ‘will’”,
+],
+reading: “Read a short article about plans or events”,
+speaking: “Talk about your plans for next month — business, travel, or personal”,
+dailyPractice: “Write a paragraph: ‘My plans for the next 6 months’”,
+somaliNote: “Focus especially on ‘going to’ — it’s very common in daily spoken English.”,
+},
+{
+week: 10,
+focus: “Reading Comprehension Skills”,
+topics: [
+“Skimming (reading fast for main idea)”,
+“Scanning (searching for specific information)”,
+“Understanding context clues for unknown words”,
+“Topic sentence and supporting details”,
+],
+reading: “Read a 200-word article. Answer: What is it about? What are 3 key points?”,
+speaking: “Summarize what you read in 3 sentences”,
+dailyPractice: “Read one short BBC article (BBC Learning English level 1)”,
+somaliNote: “Don’t translate every word — train your brain to understand meaning from context.”,
+},
+{
+week: 11,
+focus: “Health, Body & Emotions”,
+topics: [
+“Body parts and health vocabulary”,
+“At the doctor: symptoms, describing pain”,
+“Emotions and feelings: worried, excited, disappointed”,
+“Should/shouldn’t for advice”,
+],
+reading: “Read a health tip or short medical dialogue”,
+speaking: “Role-play a doctor’s appointment conversation”,
+dailyPractice: “Describe how you feel each morning in English (2–3 sentences)”,
+somaliNote: “Useful for traveling, business dealings internationally, or any medical context.”,
+},
+{
+week: 12,
+focus: “Work, Business & Professional English”,
+topics: [
+“Job titles and workplace vocabulary”,
+“Email basics: greeting, body, closing”,
+“Formal vs informal language”,
+“Talking about your job/business”,
+],
+reading: “Read a simple professional email”,
+speaking: “Describe your business or work to someone in English (elevator pitch)”,
+dailyPractice: “Write a short email introduction to a business partner”,
+somaliNote: “For your gold trading and entrepreneurship ventures — professional English is essential.”,
+},
+],
+milestone: “Read a full news article and give a 3-minute spoken summary”,
+resources: [“BBC News (Learning English)”, “Business English Pod (podcast)”, “Grammarly (free version)”],
+},
+{
+month: 4,
+title: “Expansion”,
+subtitle: “Fluency, Listening & Real Conversations”,
+color: “#B45309”,
+accent: “#F59E0B”,
+level: “Intermediate”,
+weeks: [
+{
+week: 13,
+focus: “Present Perfect Tense”,
+topics: [
+“Have/has + past participle: I have visited, She has eaten”,
+“Difference: Past simple vs Present perfect”,
+“Ever/Never/Already/Yet/Just in sentences”,
+“Life experiences: Have you ever…?”,
+],
+reading: “Read a biography — notice all present perfect uses”,
+speaking: “Talk about your life experiences using ‘have you ever’”,
+dailyPractice: “Write 5 sentences: things you have done in your life”,
+somaliNote: “This tense has no direct Somali equivalent — treat it as a completely new concept.”,
+},
+{
+week: 14,
+focus: “Conditionals (If statements)”,
+topics: [
+“Zero conditional: Water boils if you heat it”,
+“First conditional: If it rains, I will stay home”,
+“Second conditional: If I had money, I would buy a car”,
+“Common conditional phrases in business and daily life”,
+],
+reading: “Read conditional sentences in a contract or agreement”,
+speaking: “Discuss business scenarios: ‘If I expand my business, I will…’”,
+dailyPractice: “Write 3 sentences about your business using conditionals”,
+somaliNote: “Second conditional is very useful in negotiations — ‘If the price were lower, I would buy more.’”,
+},
+{
+week: 15,
+focus: “Phrasal Verbs & Idioms”,
+topics: [
+“Top 20 phrasal verbs: give up, look for, find out, come up with”,
+“Common idioms: break the ice, on the same page, cut to the chase”,
+“Informal vs formal equivalents”,
+“Using idioms naturally without overdoing it”,
+],
+reading: “Read a business or news article. Identify any phrasal verbs”,
+speaking: “Use 5 phrasal verbs in a conversation about your week”,
+dailyPractice: “Learn 2 new phrasal verbs daily. Use them in sentences”,
+somaliNote: “Phrasal verbs are confusing because the meaning is not literal — memorize them as whole phrases.”,
+},
+{
+week: 16,
+focus: “Listening & Responding Skills”,
+topics: [
+“Active listening techniques”,
+“Asking for clarification: Could you repeat that? What do you mean by…?”,
+“Agreeing and disagreeing politely”,
+“Giving opinions: I think, In my opinion, I believe”,
+],
+reading: “Watch a TED-Ed video with subtitles — take notes on key points”,
+speaking: “Discuss a topic for 5 minutes with opinion phrases”,
+dailyPractice: “Listen to one English podcast episode (VOA Learning English)”,
+somaliNote: “Don’t be afraid to say ‘Could you say that again please?’ — native speakers respect this.”,
+},
+],
+milestone: “Have a 10-minute unscripted conversation on a familiar topic”,
+resources: [“VOA Learning English (podcast)”, “TED-Ed (YouTube)”, “Anki flashcard app”],
+},
+{
+month: 5,
+title: “Refinement”,
+subtitle: “Complex Reading & Confident Speaking”,
+color: “#065F46”,
+accent: “#34D399”,
+level: “Upper-Intermediate”,
+weeks: [
+{
+week: 17,
+focus: “Passive Voice & Formal Writing”,
+topics: [
+“Active vs Passive: ‘We built the house’ vs ‘The house was built’”,
+“When to use passive (formal writing, news, business)”,
+“Passive in different tenses”,
+“Formal writing: reports, proposals, letters”,
+],
+reading: “Read a formal business proposal or news report”,
+speaking: “Describe a business process using passive voice”,
+dailyPractice: “Rewrite 5 active sentences into passive voice”,
+somaliNote: “Passive voice is very common in written English, especially in business — essential for your ventures.”,
+},
+{
+week: 18,
+focus: “Complex Reading Strategies”,
+topics: [
+“Understanding long articles (400–600 words)”,
+“Identifying author’s purpose and tone”,
+“Inference: reading between the lines”,
+“Vocabulary building from context”,
+],
+reading: “Read a full BBC or CNN article on a business or economic topic”,
+speaking: “Present a 5-minute summary and your opinion of the article”,
+dailyPractice: “Read one full article per day and write 3 new words learned”,
+somaliNote: “Focus on economic and business news — directly useful for your work in Somalia.”,
+},
+{
+week: 19,
+focus: “Negotiation & Persuasion Language”,
+topics: [
+“Making offers: ‘What if we…?’ ‘How about…?’”,
+“Softening disagreements: ‘I see your point, however…’”,
+“Closing deals: ‘We have a deal.’ ‘Let’s move forward.’”,
+“Numbers and figures in business discussions”,
+],
+reading: “Read a negotiation transcript or business case study”,
+speaking: “Role-play: Negotiate a price for gold or real estate deal”,
+dailyPractice: “Watch ‘English for Business Negotiations’ on YouTube”,
+somaliNote: “This month connects directly to your gold trading business — practice these scenarios daily.”,
+},
+{
+week: 20,
+focus: “Storytelling & Presentations”,
+topics: [
+“Structuring a story: beginning, middle, end”,
+“Transition phrases: First, Then, After that, Finally”,
+“Engaging an audience: pausing, emphasis, questions”,
+“Presenting ideas clearly and confidently”,
+],
+reading: “Read a personal essay or motivational speech”,
+speaking: “Give a 5-minute presentation about your business or life”,
+dailyPractice: “Practice one 3-minute speech per day — record and review”,
+somaliNote: “Somali culture values oral storytelling — use this strength in English presentations.”,
+},
+],
+milestone: “Deliver a 5-minute business pitch in English from memory”,
+resources: [“Harvard Business Review (articles)”, “Coursera Business English”, “Toastmasters (virtual meetings)”],
+},
+{
+month: 6,
+title: “Mastery”,
+subtitle: “Advanced Fluency & Real-World Confidence”,
+color: “#7C1D1D”,
+accent: “#F87171”,
+level: “Advanced”,
+weeks: [
+{
+week: 21,
+focus: “Advanced Grammar & Nuance”,
+topics: [
+“Mixed conditionals: If I had worked harder, I would be successful now”,
+“Subjunctive: I suggest that he be present”,
+“Inversion for emphasis: Never have I seen such dedication”,
+“Cleft sentences: It was John who called me”,
+],
+reading: “Read editorial articles — identify advanced grammar structures”,
+speaking: “Use advanced structures naturally in a 10-minute discussion”,
+dailyPractice: “Write a 200-word opinion essay using advanced grammar”,
+somaliNote: “These structures signal high education level in English — powerful for international business.”,
+},
+{
+week: 22,
+focus: “Accent Reduction & Pronunciation Polish”,
+topics: [
+“Word stress patterns: PHOtograph / phoTOGraphy”,
+“Sentence stress and rhythm of English”,
+“Linking words: ‘What are you doing?’ sounds like ‘Whadya doin?’”,
+“The schwa sound (ə) — most common English vowel”,
+],
+reading: “Read poetry aloud to practice rhythm”,
+speaking: “Record yourself. Compare to a native speaker. Identify differences.”,
+dailyPractice: “Use Forvo.com to check pronunciation of 10 new words daily”,
+somaliNote: “Somali has distinct pronunciation patterns — don’t aim for American/British accent, aim for CLARITY.”,
+},
+{
+week: 23,
+focus: “Reading Literature & Complex Texts”,
+topics: [
+“Short stories: O. Henry, short novels”,
+“Newspapers: The Guardian, The Economist”,
+“Academic reading: introductions, abstracts”,
+“Critical thinking while reading”,
+],
+reading: “Read a full short story or 2-page magazine article”,
+speaking: “Book/article discussion: what did you think? agree/disagree with the author?”,
+dailyPractice: “Read 30 minutes of authentic English content daily”,
+somaliNote: “You are now reading like an educated native speaker — this is a major achievement.”,
+},
+{
+week: 24,
+focus: “Final Review & Real-World Fluency”,
+topics: [
+“Review all grammar structures with confidence”,
+“Expand vocabulary to 3,000+ words”,
+“Handle unexpected questions and topics”,
+“Express complex ideas, emotions, and arguments”,
+],
+reading: “Read an article outside your comfort zone (science, politics, culture)”,
+speaking: “Final assessment: 15-minute open conversation on any topic”,
+dailyPractice: “Engage in an English-only day — think in English as much as possible”,
+somaliNote: “You began with ‘My name is…’ — now you are building businesses and ideas in English. That is extraordinary progress.”,
+},
+],
+milestone: “Confidently handle any conversation, meeting, or reading in English”,
+resources: [“The Economist”, “Audible (English audiobooks)”, “italki (conversation with native speakers)”],
+},
+];
+
+const tips = [
+{ icon: “🎙️”, title: “Speak from Day 1”, body: “Don’t wait until you’re ‘ready.’ Speak English from your very first day, even if it’s just one sentence.” },
+{ icon: “📖”, title: “Read Every Day”, body: “Even 15 minutes of reading daily builds vocabulary faster than any class. Use BBC Learning English to start.” },
+{ icon: “🧠”, title: “Think in English”, body: “When you catch yourself thinking in Somali, try to translate that thought. This rewires your brain over time.” },
+{ icon: “🎧”, title: “Listen Actively”, body: “Watch English videos with subtitles. Then watch again WITHOUT subtitles. Train your ear every single day.” },
+{ icon: “❌”, title: “Mistakes = Progress”, body: “Every mistake is a lesson. The best English speakers made thousands of errors. Never be ashamed of trying.” },
+{ icon: “📝”, title: “Keep a Journal”, body: “Write 5 sentences in English every night about your day. Over 6 months, this alone transforms your writing.” },
+];
+
+export default function EnglishCurriculum() {
+const [activeMonth, setActiveMonth] = useState(0);
+const [activeWeek, setActiveWeek] = useState(null);
+
+const m = curriculum[activeMonth];
+
+return (
+<div style={{ fontFamily: “‘Segoe UI’, system-ui, sans-serif”, background: “#0F1117”, minHeight: “100vh”, color: “#E8EAED” }}>
+{/* Header */}
+<div style={{ background: “linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)”, padding: “40px 24px 32px”, borderBottom: “1px solid #ffffff15” }}>
+<div style={{ maxWidth: 860, margin: “0 auto” }}>
+<div style={{ fontSize: 12, letterSpacing: 3, color: “#94A3B8”, textTransform: “uppercase”, marginBottom: 10 }}>English Language Program</div>
+<h1 style={{ fontSize: 32, fontWeight: 800, margin: “0 0 8px”, background: “linear-gradient(90deg, #60A5FA, #A78BFA)”, WebkitBackgroundClip: “text”, WebkitTextFillColor: “transparent” }}>
+From Zero to Fluent
+</h1>
+<p style={{ color: “#94A3B8”, fontSize: 15, margin: “0 0 24px” }}>
+A 6-Month Personalized Curriculum · Designed for Somali Speakers · Focus: Reading, Understanding & Speaking
+</p>
+<div style={{ display: “flex”, gap: 16, flexWrap: “wrap” }}>
+{[[“📅”, “6 Months”], [“📚”, “24 Weeks”], [“🗣️”, “Speaking First”], [“🇸🇴”, “Somali Context”]].map(([icon, label]) => (
+<div key={label} style={{ background: “#ffffff10”, border: “1px solid #ffffff15”, borderRadius: 8, padding: “6px 14px”, fontSize: 13, color: “#CBD5E1” }}>
+{icon} {label}
+</div>
+))}
+</div>
+</div>
+</div>
+
+```
+  <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px" }}>
+    {/* Month selector */}
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 32 }}>
+      {curriculum.map((c, i) => (
+        <button
+          key={i}
+          onClick={() => { setActiveMonth(i); setActiveWeek(null); }}
+          style={{
+            background: activeMonth === i ? c.color : "#1E2433",
+            border: `2px solid ${activeMonth === i ? c.accent : "#ffffff10"}`,
+            borderRadius: 12, padding: "14px 12px", cursor: "pointer", textAlign: "left",
+            transition: "all 0.2s", color: "#E8EAED"
+          }}
+        >
+          <div style={{ fontSize: 11, color: activeMonth === i ? c.accent : "#64748B", letterSpacing: 1, textTransform: "uppercase", marginBottom: 4 }}>Month {i + 1}</div>
+          <div style={{ fontSize: 15, fontWeight: 700 }}>{c.title}</div>
+          <div style={{ fontSize: 12, color: activeMonth === i ? "#CBD5E1" : "#64748B", marginTop: 2 }}>{c.level}</div>
+        </button>
+      ))}
+    </div>
+
+    {/* Active Month Detail */}
+    <div style={{ background: "#1E2433", borderRadius: 16, border: `1px solid ${m.accent}30`, overflow: "hidden", marginBottom: 32 }}>
+      <div style={{ background: m.color, padding: "24px 28px" }}>
+        <div style={{ fontSize: 12, letterSpacing: 2, color: m.accent, textTransform: "uppercase", marginBottom: 6 }}>Month {activeMonth + 1} · {m.level}</div>
+        <h2 style={{ margin: "0 0 4px", fontSize: 26, fontWeight: 800 }}>{m.title}</h2>
+        <p style={{ margin: 0, color: "#CBD5E1", fontSize: 15 }}>{m.subtitle}</p>
+      </div>
+
+      {/* Weeks */}
+      <div style={{ padding: "20px 24px" }}>
+        <div style={{ fontSize: 13, color: "#64748B", marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}>Weekly Breakdown</div>
+        {m.weeks.map((w, wi) => (
+          <div key={wi} style={{ marginBottom: 10 }}>
+            <button
+              onClick={() => setActiveWeek(activeWeek === wi ? null : wi)}
+              style={{
+                width: "100%", background: activeWeek === wi ? `${m.color}80` : "#262D3D",
+                border: `1px solid ${activeWeek === wi ? m.accent : "#ffffff10"}`,
+                borderRadius: 10, padding: "14px 18px", cursor: "pointer", textAlign: "left",
+                display: "flex", justifyContent: "space-between", alignItems: "center", color: "#E8EAED"
+              }}
+            >
+              <div>
+                <span style={{ fontSize: 12, color: m.accent, marginRight: 8 }}>Week {w.week}</span>
+                <span style={{ fontSize: 15, fontWeight: 600 }}>{w.focus}</span>
+              </div>
+              <span style={{ color: "#64748B", fontSize: 18 }}>{activeWeek === wi ? "▲" : "▼"}</span>
+            </button>
+
+            {activeWeek === wi && (
+              <div style={{ background: "#1A2030", border: `1px solid ${m.accent}20`, borderTop: "none", borderRadius: "0 0 10px 10px", padding: "18px 20px" }}>
+                <div style={{ display: "grid", gap: 16 }}>
+                  <div>
+                    <div style={{ fontSize: 12, color: m.accent, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>📋 Topics</div>
+                    {w.topics.map((t, ti) => (
+                      <div key={ti} style={{ padding: "6px 0", borderBottom: "1px solid #ffffff08", fontSize: 14, color: "#CBD5E1", display: "flex", gap: 8 }}>
+                        <span style={{ color: m.accent }}>→</span> {t}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div style={{ background: "#262D3D", borderRadius: 8, padding: "12px 14px" }}>
+                      <div style={{ fontSize: 11, color: "#60A5FA", marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>📖 Reading</div>
+                      <div style={{ fontSize: 13, color: "#CBD5E1" }}>{w.reading}</div>
+                    </div>
+                    <div style={{ background: "#262D3D", borderRadius: 8, padding: "12px 14px" }}>
+                      <div style={{ fontSize: 11, color: "#34D399", marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>🗣️ Speaking</div>
+                      <div style={{ fontSize: 13, color: "#CBD5E1" }}>{w.speaking}</div>
+                    </div>
+                  </div>
+                  <div style={{ background: "#1E293B", borderRadius: 8, padding: "12px 14px", borderLeft: `3px solid ${m.accent}` }}>
+                    <div style={{ fontSize: 11, color: m.accent, marginBottom: 4, textTransform: "uppercase", letterSpacing: 1 }}>⏰ Daily Practice</div>
+                    <div style={{ fontSize: 13, color: "#CBD5E1" }}>{w.dailyPractice}</div>
+                  </div>
+                  <div style={{ background: "#2D1B4E", borderRadius: 8, padding: "12px 14px", borderLeft: "3px solid #A78BFA" }}>
+                    <div style={{ fontSize: 11, color: "#A78BFA", marginBottom: 4, textTransform: "uppercase", letterSpacing: 1 }}>🇸🇴 Somali Speaker Note</div>
+                    <div style={{ fontSize: 13, color: "#C4B5FD" }}>{w.somaliNote}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        {/* Milestone */}
+        <div style={{ marginTop: 20, background: `${m.color}40`, border: `1px solid ${m.accent}50`, borderRadius: 10, padding: "14px 18px" }}>
+          <div style={{ fontSize: 11, color: m.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>🏆 Month {activeMonth + 1} Milestone</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: "#E8EAED" }}>{m.milestone}</div>
+        </div>
+
+        {/* Resources */}
+        <div style={{ marginTop: 12, background: "#262D3D", borderRadius: 10, padding: "14px 18px" }}>
+          <div style={{ fontSize: 11, color: "#64748B", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>📦 Recommended Resources</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {m.resources.map((r, ri) => (
+              <div key={ri} style={{ background: "#1A2030", border: "1px solid #ffffff15", borderRadius: 6, padding: "4px 12px", fontSize: 12, color: "#94A3B8" }}>{r}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Success Tips */}
+    <div>
+      <div style={{ fontSize: 13, color: "#64748B", textTransform: "uppercase", letterSpacing: 2, marginBottom: 16 }}>6 Rules for Success</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        {tips.map((tip, i) => (
+          <div key={i} style={{ background: "#1E2433", border: "1px solid #ffffff10", borderRadius: 12, padding: "16px 18px" }}>
+            <div style={{ fontSize: 22, marginBottom: 8 }}>{tip.icon}</div>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6, color: "#E8EAED" }}>{tip.title}</div>
+            <div style={{ fontSize: 13, color: "#94A3B8", lineHeight: 1.5 }}>{tip.body}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Footer message */}
+    <div style={{ marginTop: 32, textAlign: "center", padding: "24px", background: "linear-gradient(135deg, #1a1a2e, #0f3460)", borderRadius: 16, border: "1px solid #ffffff10" }}>
+      <div style={{ fontSize: 22, marginBottom: 10 }}>🌟</div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: "#60A5FA", marginBottom: 8 }}>Your Journey Starts Today</div>
+      <div style={{ fontSize: 14, color: "#94A3B8", maxWidth: 500, margin: "0 auto", lineHeight: 1.6 }}>
+        Somalia's business world is going global. English is your bridge to international partners, investors, and opportunities. 
+        In 6 months, you will speak with confidence. Commit to one hour daily — that is all it takes.
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+);
+}
